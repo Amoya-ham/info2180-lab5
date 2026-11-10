@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   var lookupButton = document.getElementById("lookup");
+  var citiesButton = document.getElementById("lookup-cities");
   var countryInput = document.getElementById("country");
   var result = document.getElementById("result");
 
-  lookupButton.addEventListener("click", function () {
+  function search(extra) {
     var country = countryInput.value.trim();
+    var url = "world.php?country=" + encodeURIComponent(country) + extra;
 
-    fetch("world.php?country=" + encodeURIComponent(country))
+    fetch(url)
       .then(function (response) {
         return response.text();
       })
@@ -16,5 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(function (error) {
         result.innerHTML = "<p>Something went wrong.</p>";
       });
+  }
+
+  lookupButton.addEventListener("click", function () {
+    search("");
+  });
+
+  citiesButton.addEventListener("click", function () {
+    search("&lookup=cities");
   });
 });
